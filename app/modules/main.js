@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
-import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import config from 'config'
 
@@ -77,9 +77,11 @@ export const store = createStore(
         ...reducers,
 
         routing: routerReducer
-    }),
+    }), compose(
     applyMiddleware(thunk),
-)
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+    )
+);
 
 /**
  * history
